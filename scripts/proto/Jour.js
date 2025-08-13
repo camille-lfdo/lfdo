@@ -1,4 +1,3 @@
-// ...existing code...
 window.listeJours = [];
 
 window.obtenirJour = function(jour, mois, annee) {
@@ -15,4 +14,3 @@ window.modifierHeuresJour = function(jourObj, embauche, debauche, pause) {
     jourObj.heureDebauche = debauche;
     jourObj.dureePause = pause;
 };
-// ...existing code...

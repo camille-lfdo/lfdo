@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendrier - Gestion des heures</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="Jour.js"></script>
+    <script defer src="calendarHandler.js"></script>
+    <script defer src="heures.js"></script>
+</head>
+<body>
+    <button id="moisPrecedent">&lt; Précédent</button>
+    <span id="moisAffiche"></span>
+    <button id="moisSuivant">Suivant &gt;</button>
+    <div id="calendrier"></div>
+    <div id="zoneEdition" style="display:none;">
+        <h2>Édition du <span id="dateSelectionnee"></span></h2>
+        <form id="formulaireHeures">
+            <label>Heure d'embauche : <input type="time" id="heureEmbauche"></label><br>
+            <label>Heure de débauche : <input type="time" id="heureDebauche"></label><br>
+            <label>Durée de pause (minutes) : <input type="number" id="dureePause" min="0"></label><br>
+            <button type="submit">Enregistrer</button>
+        </form>
+        <div id="infosJour"></div>
+    </div>
+
+</body>
+</html>

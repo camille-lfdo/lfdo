@@ -1,0 +1,57 @@
+/* .jour {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 2px;
+    text-align: center;
+    line-height: 32px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: background 0.2s;
+}
+.jour:hover {
+    background: #b3d4fc;
+} */
+#formulaireHeures {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    max-width: 300px;
+}
+#calendrier {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    max-width: 350px;
+    margin: 20px auto;
+}
+.jour-semaine {
+    font-weight: bold;
+    background: #e0e0e0;
+    text-align: center;
+    padding: 6px 0;
+}
+.case-jour, .case-vide {
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 4px;
+    background: #f8f8f8;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+.case-jour.selectionnee {
+    background: #4a90e2;
+    color: #fff;
+    border: 2px solid #357ab8;
+}
+#zoneEdition {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    max-width: 350px;
+}

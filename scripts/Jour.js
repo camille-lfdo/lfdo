@@ -1,4 +1,7 @@
 window.listeJours = [];
+// Au chargement, récupère la liste depuis le localStorage si elle existe
+const joursSauvegardes = localStorage.getItem('listeJours');
+window.listeJours = joursSauvegardes ? JSON.parse(joursSauvegardes) : [];
 
 /**
  * Recherche un objet jour correspondant à la date (jour, mois, année).
@@ -28,4 +31,6 @@ window.modifierHeuresJour = function(jourObj, embauche, debauche, pause) {
     jourObj.heureEmbauche = embauche;
     jourObj.heureDebauche = debauche;
     jourObj.dureePause = pause;
+    // Sauvegarde automatique après modification
+    localStorage.setItem('listeJours', JSON.stringify(window.listeJours));
 };

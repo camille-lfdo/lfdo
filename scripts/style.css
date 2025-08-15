@@ -1,57 +1,254 @@
-/* .jour {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    margin: 2px;
-    text-align: center;
-    line-height: 32px;
-    background: #f0f0f0;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    transition: background 0.2s;
+:root{
+    --couleur-primaire: #4a90e2;
+    --couleur-primaire-contrast: #ffffff;
+    --couleur-fond: #ffffff;
+    --couleur-cadre: #e6eefc;
+    --couleur-texte: #222;
+    --taille-base: 16px;
 }
-.jour:hover {
-    background: #b3d4fc;
-} */
-#formulaireHeures {
-    margin-top: 20px;
-    padding: 10px;
-    background: #f8f8f8;
-    border-radius: 8px;
-    max-width: 300px;
-}
+
+/* Conteneur du calendrier */
 #calendrier {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    max-width: 350px;
-    margin: 20px auto;
+    gap: 6px;
+    width: min(420px, 96%);
+    margin: 15px auto;
+    background: var(--couleur-fond);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-sizing: border-box;
+    margin-top: calc(12px + 8vh); /* conserve l'espacement existant + espace pour header */
+
 }
+
+/* En-têtes des jours de la semaine */
 .jour-semaine {
-    font-weight: bold;
-    background: #e0e0e0;
+    font-weight: 700;
+    background: var(--couleur-cadre);
     text-align: center;
-    padding: 6px 0;
+    padding: 8px 4px;
+    font-size: 0.95rem;
+    color: var(--couleur-texte);
+    border-radius: 6px;
 }
+
+/* Cases de jours */
 .case-jour, .case-vide {
-    height: 32px;
+    height: 44px;
+    min-height: 44px;
     text-align: center;
-    line-height: 32px;
-    border-radius: 4px;
-    background: #f8f8f8;
-    cursor: pointer;
-    border: 1px solid #ccc;
-}
-.case-jour.selectionnee {
-    background: #4a90e2;
-    color: #fff;
-    border: 2px solid #357ab8;
-}
-#zoneEdition {
-    margin-top: 20px;
-    padding: 10px;
-    background: #f8f8f8;
+    line-height: 44px;
     border-radius: 8px;
-    max-width: 350px;
+    background: #f7f9ff;
+    cursor: pointer;
+    border: 1px solid #d6e4fb;
+    font-size: 1rem;
+    color: var(--couleur-texte);
+    user-select: none;
+    transition: background 150ms ease, transform 100ms ease;
+    padding: 0 6px;
+    box-sizing: border-box;
+}
+
+/* Effet focus accessible (clavier/assistive tech) */
+.case-jour:focus-visible, .case-jour:focus {
+    outline: 3px solid rgba(74,144,226,0.25);
+    outline-offset: 2px;
+}
+
+/* Jour sélectionné */
+.case-jour.selectionnee {
+    background: var(--couleur-primaire);
+    color: var(--couleur-primaire-contrast);
+    border: 2px solid #357ab8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(53,122,184,0.15);
+}
+
+/* Zone d'édition (formulaire) */
+#zoneEdition {
+    margin-top: 14px;
+    padding: 14px;
+    background: #f4f7ff;
+    border-radius: 10px;
+    width: min(420px, 96%);
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+#controleMois {
+    position: absolute;
+    top: 6vh;                    /* distance depuis le haut de la fenêtre */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.00); /* transparent mais permet ajustement si besoin */
+    padding: 6px 8px;
+    /* pointer-events: auto; */
+}
+
+/* Mois affiché : bien centré, gros et lisible */
+#moisAffiche {
+    font-weight: 900;
+    font-size: 1.9rem;
+    text-align: center;
+    color: var(--couleur-texte);
+    min-width: 260px;
+    line-height: 1;
+    display: inline-block;
+}
+
+/* Boutons sur les côtés du mois, accessibles et visibles */
+#moisPrecedent, #moisSuivant {
+    background: var(--couleur-fond);
+    border: 1px solid transparent;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--couleur-texte);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+#moisPrecedent:focus-visible, #moisSuivant:focus-visible {
+    outline: 3px solid rgba(74,144,226,0.25);
+    outline-offset: 2px;
+}
+#moisPrecedent:hover, #moisSuivant:hover {
+    background: rgba(74,144,226,0.06);
+}
+
+/* Styles des champs du formulaire */
+#zoneEdition label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: var(--couleur-texte);
+}
+#zoneEdition input[type="time"],
+#zoneEdition input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #d9e6ff;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+/* Bouton d'enregistrement plus grand */
+#zoneEdition button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.05rem;
+    background: var(--couleur-primaire);
+    color: var(--couleur-primaire-contrast);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+#zoneEdition button:hover { background: #357ab8; }
+
+/* Mise en évidence et grossissement des infos horaires pour lisibilité */
+#infosJour {
+    margin-top: 8px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e6eefc;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: var(--couleur-texte);
+}
+#infosJour strong {
+    display: inline-block;
+    width: 46%;
+    font-weight: 700;
+    color: #0b3b66;
+}
+
+/* Indication d'amplitude (calcul du temps de travail) si ajoutée */
+#infosJour .amplitude {
+    display: block;
+    margin-top: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a5a96;
+}
+
+/* Accessibilité générale des interactions */
+button, .case-jour {
+    touch-action: manipulation;
+}
+
+/* MEDIA QUERIES : Améliorations pour mobile */
+@media (max-width: 600px) {
+    :root{ --taille-base: 15px; }
+
+    /* Calendrier compacte mais lisible */
+    #calendrier {
+        gap: 6px;
+        padding: 6px;
+        width: 100%;
+        grid-template-columns: repeat(7, 1fr);
+    }
+    .jour-semaine {
+        padding: 6px 2px;
+        font-size: 0.85rem;
+    }
+    .case-jour, .case-vide {
+        height: 48px;
+        min-height: 48px;
+        line-height: 48px;
+        font-size: 1.05rem;
+        border-radius: 10px;
+    }
+    /* Rendre la zone d'édition pleine largeur et facile à toucher */
+    #zoneEdition {
+        position: relative;
+        bottom: 0;
+        width: 98%;
+        padding: 12px;
+    }
+    #zoneEdition input[type="time"],
+    #zoneEdition input[type="number"] {
+        padding: 12px;
+        font-size: 1.05rem;
+    }
+    #zoneEdition button { padding: 12px; font-size: 1.05rem; }
+
+    #controleMois {
+        top: 3.5vh;
+        gap: 8px;
+        padding: 4px 6px;
+    }
+    /* Centrer et agrandir le mois pour mobile */
+    #moisAffiche {font-size: 1.35rem;
+        min-width: 160px;
+        display:block;
+        text-align:center;
+        margin: 8px auto; }
+    #moisPrecedent, #moisSuivant {
+        padding: 8px;
+        font-size: 0.95rem;
+    }
+
+    /* Rendre les infos horaires plus lisibles */
+    #infosJour {
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+}
+
+/* petite amélioration pour le clavier : focus visible pour inputs */
+input:focus, button:focus {
+    outline: 3px solid rgba(74,144,226,0.18);
+    outline-offset: 2px;
 }

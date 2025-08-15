@@ -73,6 +73,7 @@ function selectionnerJour(jour, mois, annee, caseJour) {
     dureePauseEl.value = window.jourSelectionne.dureePause || '';
 
     afficherInfosJour();
+    afficherEmplitudeHoraire();
 }
 
 /**
@@ -89,6 +90,82 @@ function afficherInfosJour() {
     } else {
         infosJourEl.innerHTML = "<em>Aucune information renseignée.</em>";
     }
+}
+
+/**
+ * Convertit une chaîne "HH:MM" en heures décimales (ex: "08:30" -> 8.5).
+ * Retourne NaN si la valeur n'est pas reconnue.
+ * @param {string} hhmm
+ * @returns {number}
+ */
+function sexagesimalEnDecimal(hhmm) {
+    if (typeof hhmm !== 'string') return NaN;
+    const m = hhmm.match(/^(\d{1,2}):(\d{1,2})$/);
+    if (!m) return NaN;
+    const h = parseInt(m[1], 10);
+    const min = parseInt(m[2], 10);
+    return h + (min / 60);
+}
+
+/**
+ * Convertit un nombre d'heures décimales en chaîne sexagésimale "HH:MM".
+ * Gère les valeurs négatives.
+ * @param {number} decimalHeures
+ * @returns {string}
+ */
+function decimalEnSexagesimal(decimalHeures) {
+    if (isNaN(decimalHeures)) return '-';
+    const signe = decimalHeures < 0 ? '-' : '';
+    const absVal = Math.abs(decimalHeures);
+    let heures = Math.floor(absVal);
+    let minutes = Math.round((absVal - heures) * 60);
+    if (minutes === 60) { heures += 1; minutes = 0; }
+    const pad = n => String(n).padStart(2, '0');
+    return `${signe}${heures}:${pad(minutes)}`;
+}
+
+function afficherEmplitudeHoraire() {
+    console.log("Calcul de l'amplitude horaire...");
+    const embaucheStr = window.jourSelectionne.heureEmbauche;
+    const debaucheStr = window.jourSelectionne.heureDebauche;
+    const pauseVal = window.jourSelectionne.dureePause;
+
+    if (!embaucheStr || !debaucheStr) {
+        console.log("Heures d'embauche ou de débauche manquantes.");
+        return;
+    }
+
+    const embaucheDec = sexagesimalEnDecimal(embaucheStr);
+    const debaucheDec = sexagesimalEnDecimal(debaucheStr);
+
+    // Calculer la durée de pause en heures décimales.
+    // Accepté : nombre de minutes (ex: "30" ou 30) ou format "HH:MM".
+    let pauseHeures = NaN;
+    if (pauseVal === '' || pauseVal == null) {
+        pauseHeures = 0;
+    } else if (typeof pauseVal === 'string' && /^\d{1,2}:\d{1,2}$/.test(pauseVal)) {
+        pauseHeures = sexagesimalEnDecimal(pauseVal);
+    } else {
+        // On suppose minutes si ce n'est pas "HH:MM"
+        const minutes = parseInt(pauseVal, 10);
+        pauseHeures = isNaN(minutes) ? 0 : (minutes / 60);
+    }
+
+    console.log(`Emb (dec)=${embaucheDec}, Deb (dec)=${debaucheDec}, Pause (h)=${pauseHeures}`);
+
+    if (isNaN(embaucheDec) || isNaN(debaucheDec)) {
+        console.log("Impossible de parser les heures en entrée.");
+        return;
+    }
+
+    const amplitudeDec = debaucheDec - embaucheDec - pauseHeures; // en heures décimales
+    const amplitudeDecArrondi = Math.round(amplitudeDec * 100) / 100; // 2 décimales
+
+    const amplitudeSexa = decimalEnSexagesimal(amplitudeDec);
+
+    // Affichage : ajout sous les autres infos
+    infosJourEl.innerHTML += `<br><strong>Amplitude (décimales) :</strong> ${amplitudeDecArrondi} h`;
+    infosJourEl.innerHTML += `<br><strong>Amplitude (sexagésimale) :</strong> ${amplitudeSexa} (HH:MM)`;
 }
 
 // Gestion des boutons de navigation des mois

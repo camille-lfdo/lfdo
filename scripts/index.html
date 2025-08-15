@@ -9,9 +9,11 @@
     <script defer src="heures.js"></script>
 </head>
 <body>
-    <button id="moisPrecedent">&lt; Précédent</button>
-    <span id="moisAffiche"></span>
-    <button id="moisSuivant">Suivant &gt;</button>
+    <div id="controleMois" aria-label="Navigation du mois">
+        <button id="moisPrecedent" aria-label="Mois précédent">&lt;</button>
+        <div id="moisAffiche" role="heading" aria-level="2"></div>
+        <button id="moisSuivant" aria-label="Mois suivant">&gt;</button>
+    </div>
     <div id="calendrier"></div>
     <div id="zoneEdition" style="display:none;">
         <h2>Édition du <span id="dateSelectionnee"></span></h2>

@@ -16,6 +16,13 @@ const nomsMois = [
     "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
 ];
 
+/**
+ * Affiche le calendrier du mois et de l'année donnés.
+ * Génère dynamiquement la grille des jours, les jours de la semaine,
+ * et gère le décalage pour commencer au bon jour.
+ * @param {number} mois - Le numéro du mois (0-11)
+ * @param {number} annee - L'année (ex: 2025)
+ */
 function afficherCalendrier(mois, annee) {
     calendrierEl.innerHTML = '';
     moisAfficheEl.textContent = `${nomsMois[mois]} ${annee}`;
@@ -45,6 +52,45 @@ function afficherCalendrier(mois, annee) {
     }
 }
 
+/**
+ * Sélectionne un jour dans le calendrier, affiche la zone d'édition,
+ * et pré-remplit les champs si des valeurs existent déjà pour ce jour.
+ * @param {number} jour - Le numéro du jour sélectionné
+ * @param {number} mois - Le numéro du mois (0-11)
+ * @param {number} annee - L'année
+ * @param {HTMLElement} caseJour - L'élément HTML du jour sélectionné
+ */
+function selectionnerJour(jour, mois, annee, caseJour) {
+    document.querySelectorAll('.case-jour.selectionnee').forEach(el => el.classList.remove('selectionnee'));
+    caseJour.classList.add('selectionnee');
+    window.jourSelectionne = window.obtenirJour(jour, mois, annee);
+    dateSelectionneeEl.textContent = `${jour}/${mois+1}/${annee}`;
+    zoneEditionEl.style.display = 'block';
+
+    heureEmbaucheEl.value = window.jourSelectionne.heureEmbauche || '';
+    heureDebaucheEl.value = window.jourSelectionne.heureDebauche || '';
+    dureePauseEl.value = window.jourSelectionne.dureePause || '';
+
+    afficherInfosJour();
+}
+
+/**
+ * Affiche les informations (heures et pause) du jour sélectionné dans la zone d'édition.
+ * Si aucune information n'est renseignée, affiche un message par défaut.
+ */
+function afficherInfosJour() {
+    if (window.jourSelectionne.heureEmbauche || window.jourSelectionne.heureDebauche || window.jourSelectionne.dureePause) {
+        infosJourEl.innerHTML = `
+            <strong>Heure d'embauche :</strong> ${window.jourSelectionne.heureEmbauche || '-'}<br>
+            <strong>Heure de débauche :</strong> ${window.jourSelectionne.heureDebauche || '-'}<br>
+            <strong>Durée de pause :</strong> ${window.jourSelectionne.dureePause || '-'} min
+        `;
+    } else {
+        infosJourEl.innerHTML = "<em>Aucune information renseignée.</em>";
+    }
+}
+
+// Gestion des boutons de navigation des mois
 btnPrecedent.addEventListener('click', () => {
     moisCourant--;
     if (moisCourant < 0) {
@@ -65,30 +111,5 @@ btnSuivant.addEventListener('click', () => {
     zoneEditionEl.style.display = 'none';
 });
 
-function selectionnerJour(jour, mois, annee, caseJour) {
-    document.querySelectorAll('.case-jour.selectionnee').forEach(el => el.classList.remove('selectionnee'));
-    caseJour.classList.add('selectionnee');
-    window.jourSelectionne = window.obtenirJour(jour, mois, annee);
-    dateSelectionneeEl.textContent = `${jour}/${mois+1}/${annee}`;
-    zoneEditionEl.style.display = 'block';
-
-    heureEmbaucheEl.value = window.jourSelectionne.heureEmbauche || '';
-    heureDebaucheEl.value = window.jourSelectionne.heureDebauche || '';
-    dureePauseEl.value = window.jourSelectionne.dureePause || '';
-
-    afficherInfosJour();
-}
-
-function afficherInfosJour() {
-    if (window.jourSelectionne.heureEmbauche || window.jourSelectionne.heureDebauche || window.jourSelectionne.dureePause) {
-        infosJourEl.innerHTML = `
-            <strong>Heure d'embauche :</strong> ${window.jourSelectionne.heureEmbauche || '-'}<br>
-            <strong>Heure de débauche :</strong> ${window.jourSelectionne.heureDebauche || '-'}<br>
-            <strong>Durée de pause :</strong> ${window.jourSelectionne.dureePause || '-'} min
-        `;
-    } else {
-        infosJourEl.innerHTML = "<em>Aucune information renseignée.</em>";
-    }
-}
-
+// Initialisation du calendrier au chargement
 afficherCalendrier(new Date().getMonth(), new Date().getFullYear());

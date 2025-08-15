@@ -2,6 +2,7 @@
 
 ## lien serveur test
 acceder au serveur test pour visualiser le prototype.
+(ne fonctionne pas sur chrome)
 
 https://lfdo.rf.gd/
 

@@ -4,7 +4,7 @@
 acceder au serveur test pour visualiser le prototype.
 (ne fonctionne pas sur chrome)
 
-https://lfdo.rf.gd/
+https://lfdo.ovh/scripts
 
 ---
 

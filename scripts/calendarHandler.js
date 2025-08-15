@@ -10,6 +10,7 @@ const btnPrecedent = document.getElementById('moisPrecedent');
 const btnSuivant = document.getElementById('moisSuivant');
 
 window.jourSelectionne = null;
+let dateSelect = new Date();
 
 const nomsMois = [
     "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
@@ -92,24 +93,20 @@ function afficherInfosJour() {
 
 // Gestion des boutons de navigation des mois
 btnPrecedent.addEventListener('click', () => {
-    moisCourant--;
-    if (moisCourant < 0) {
-        moisCourant = 11;
-        anneeCourante--;
-    }
-    afficherCalendrier(moisCourant, anneeCourante);
-    zoneEditionEl.style.display = 'none';
+    var moisTemp = dateSelect.getMonth();
+    dateSelect.setMonth(moisTemp - 1);
+    afficherCalendrier(dateSelect.getMonth(), dateSelect.getFullYear());
+    // zoneEditionEl.style.display = 'none';
 });
 
 btnSuivant.addEventListener('click', () => {
-    moisCourant++;
-    if (moisCourant > 11) {
-        moisCourant = 0;
-        anneeCourante++;
-    }
-    afficherCalendrier(moisCourant, anneeCourante);
-    zoneEditionEl.style.display = 'none';
+    var moisTemp = dateSelect.getMonth();
+    dateSelect.setMonth(moisTemp + 1);
+    afficherCalendrier(dateSelect.getMonth(), dateSelect.getFullYear());
+    // zoneEditionEl.style.display = 'none';
 });
 
 // Initialisation du calendrier au chargement
-afficherCalendrier(new Date().getMonth(), new Date().getFullYear());
+window.addEventListener("load", () => {
+    afficherCalendrier(new Date().getMonth(), new Date().getFullYear());
+})

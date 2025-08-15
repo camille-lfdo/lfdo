@@ -117,7 +117,7 @@ const UserSchema = new mongoose.Schema({
 module.exports = mongoose.model('User', UserSchema);
 ```
 
-models/Jour.js
+## models/Jour.js
 ```js
 const mongoose = require('mongoose');
 const JourSchema = new mongoose.Schema({

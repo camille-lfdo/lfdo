@@ -60,6 +60,7 @@ Base de données : MongoDB, MySQL, PostgreSQL…
 Frontend : HTML/JS (fetch ou axios pour les requêtes AJAX)  
 Authentification : JWT, sessions, OAuth…
 Exemple de flux (simplifié)    
+https://github.com/ovh/node-ovh
 
 L’utilisateur s’inscrit ou se connecte.
 Le frontend reçoit un token/session.    
